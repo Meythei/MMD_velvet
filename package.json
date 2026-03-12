@@ -1,6 +1,6 @@
 {
-  "name": "mmd-modoki",
-  "productName": "MMD2",
+  "name": "mmd-velvet",
+  "productName": "mmd-velvet",
   "version": "0.1.1",
   "description": "Electron desktop app for previewing and editing MMD assets",
   "main": ".vite/build/main.js",
@@ -15,8 +15,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "togechiyo",
-    "email": "togechiyo.gmail.com"
+    "name": "meythei"
   },
   "license": "MIT",
   "devDependencies": {
