@@ -19,7 +19,7 @@ PMX の材質フラグには、影に関するビットがあります。
 
 ## 実装方針
 
-`src/mmd-manager.ts` の `loadPMX` で、以下の流れで影設定を決定します。
+`src/renderer/core/mmd-manager.ts` の `loadPMX` で、以下の流れで影設定を決定します。
 
 1. 各モデルメッシュを一律で `shadow caster` に登録  
 2. 各モデルメッシュを一律で `receiveShadows = true` に設定  
@@ -78,7 +78,7 @@ PMX の材質フラグには、影に関するビットがあります。
   - `#light-shadow`（影の濃さ、現状は非表示）
   - `#light-shadow-frustum-size`（影範囲）
   - `#light-shadow-softness`（境界幅 / contact hardening）
-- `src/ui-controller.ts`
+- `src/renderer/components/ui-controller.ts`
   - 起動時に `setShadowEnabled(true)` を適用（UI上は常時ON）
   - `shadowFrustumSize` の更新
   - `shadowEdgeSoftness` の更新

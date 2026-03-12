@@ -2,9 +2,9 @@
 
 更新日: 2026-03-10
 対象:
-- `src/ui-controller.ts`
-- `src/mmd-manager.ts`
-- `src/timeline.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/timeline.ts`
 
 ## 1. 目的
 

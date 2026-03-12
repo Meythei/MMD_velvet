@@ -3,7 +3,7 @@
 更新日: 2026-02-22
 
 ## 1. 背景
-- 一部環境で `src/mmd-manager.ts` の編集時に文字コード起因の問題が発生することがある。
+- 一部環境で `src/renderer/core/mmd-manager.ts` の編集時に文字コード起因の問題が発生することがある。
 - Gitで `LF will be replaced by CRLF` 警告が出るため、行末変化が混ざりやすい。
 
 ## 2. 推奨ワークフロー
@@ -22,7 +22,7 @@ git diff --stat
 ```
 - 行末を含む差分確認:
 ```powershell
-git diff -- src/mmd-manager.ts
+git diff -- src/renderer/core/mmd-manager.ts
 ```
 
 ## 4. 編集時の注意

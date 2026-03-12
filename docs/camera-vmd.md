@@ -1,7 +1,7 @@
 # カメラVMD対応メモ
 
 このドキュメントは、カメラ用 VMD の読み込み実装についてまとめたものです。  
-対象コードは主に `src/mmd-manager.ts` と `src/ui-controller.ts` です。
+対象コードは主に `src/renderer/core/mmd-manager.ts` と `src/renderer/components/ui-controller.ts` です。
 
 ## 目的
 

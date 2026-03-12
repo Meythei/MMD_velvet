@@ -3,7 +3,7 @@
 更新日: 2026-03-10
 
 対象:
-- `src/mmd-manager.ts`
+- `src/renderer/core/mmd-manager.ts`
 - PMX/PMD モデル表示
 - WebGL2 / WebGPU 共通の描画問題
 

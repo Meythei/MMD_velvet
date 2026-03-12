@@ -21,8 +21,8 @@
 
 ## 対象コード
 
-- `src/mmd-manager.ts`
-- `src/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/ui-controller.ts`
 
 ## 結論
 

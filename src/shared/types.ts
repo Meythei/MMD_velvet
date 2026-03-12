@@ -1,0 +1,381 @@
+export interface ElectronAPI {
+    openFileDialog: (filters: { name: string; extensions: string[] }[]) => Promise<string | null>;
+    openDirectoryDialog: () => Promise<string | null>;
+    getPathForDroppedFile: (file: File) => string | null;
+    readBinaryFile: (filePath: string) => Promise<Buffer | null>;
+    readTextFile: (filePath: string) => Promise<string | null>;
+    getFileInfo: (filePath: string) => Promise<{ name: string; path: string; size: number; extension: string } | null>;
+    saveTextFile: (
+        content: string,
+        defaultFileName?: string,
+        filters?: { name: string; extensions: string[] }[],
+    ) => Promise<string | null>;
+    listBundledWgslFiles: () => Promise<{ name: string; path: string }[]>;
+    writeTextFileToPath: (filePath: string, content: string) => Promise<boolean>;
+    savePngFile: (dataUrl: string, defaultFileName?: string) => Promise<string | null>;
+    savePngFileToPath: (dataUrl: string, directoryPath: string, fileName: string) => Promise<string | null>;
+    savePngRgbaFileToPath: (
+        rgbaData: Uint8Array,
+        width: number,
+        height: number,
+        directoryPath: string,
+        fileName: string,
+    ) => Promise<string | null>;
+    startPngSequenceExportWindow: (
+        request: PngSequenceExportRequest,
+    ) => Promise<PngSequenceExportLaunchResult | null>;
+    takePngSequenceExportJob: (jobId: string) => Promise<PngSequenceExportRequest | null>;
+    reportPngSequenceExportProgress: (progress: PngSequenceExportProgress) => void;
+    onPngSequenceExportState: (callback: (state: PngSequenceExportState) => void) => () => void;
+    onPngSequenceExportProgress: (callback: (progress: PngSequenceExportProgress) => void) => () => void;
+}
+
+export type UiLocale = "ja" | "en";
+
+declare global {
+    interface Window {
+        electronAPI: ElectronAPI;
+        mmdI18n?: {
+            getLocale: () => UiLocale;
+            setLocale: (locale: UiLocale) => void;
+            apply: () => void;
+        };
+    }
+}
+
+export interface ModelInfo {
+    name: string;
+    path: string;
+    vertexCount: number;
+    boneCount: number;
+    boneNames: string[];
+    boneControlInfos?: BoneControlInfo[];
+    morphCount: number;
+    morphNames: string[];
+    morphDisplayFrames: MorphDisplayFrameInfo[];
+}
+
+export interface BoneControlInfo {
+    name: string;
+    movable: boolean;
+    rotatable: boolean;
+    isIk?: boolean;
+    isIkAffected?: boolean;
+}
+
+export interface MorphDisplayItemInfo {
+    index: number;
+    name: string;
+}
+
+export interface MorphDisplayFrameInfo {
+    name: string;
+    morphs: MorphDisplayItemInfo[];
+}
+
+export interface MotionInfo {
+    name: string;
+    path: string;
+    frameCount: number;
+}
+
+/** Track category for timeline row ordering */
+export type TrackCategory = 'root' | 'camera' | 'semi-standard' | 'bone' | 'morph';
+
+/** A single row in the keyframe timeline */
+export interface KeyframeTrack {
+    /** Bone or morph name */
+    name: string;
+    /** Row ordering category */
+    category: TrackCategory;
+    /** Frame numbers that have keyframes (sorted ascending) */
+    frames: Uint32Array;
+}
+
+export interface InterpolationCurve {
+    x1: number;
+    x2: number;
+    y1: number;
+    y2: number;
+}
+
+export interface InterpolationChannelPreview {
+    id: string;
+    label: string;
+    curve: InterpolationCurve;
+    available: boolean;
+}
+
+export type InterpolationPreviewSource =
+    | "none"
+    | "bone-movable"
+    | "bone-rotation-only"
+    | "camera"
+    | "morph";
+
+export interface TimelineInterpolationPreview {
+    source: InterpolationPreviewSource;
+    frame: number;
+    hasKeyframe: boolean;
+    hasCurveData: boolean;
+    channels: InterpolationChannelPreview[];
+}
+
+export interface AppState {
+    modelLoaded: boolean;
+    motionLoaded: boolean;
+    isPlaying: boolean;
+    currentFrame: number;
+    totalFrames: number;
+    modelInfo: ModelInfo | null;
+    motionInfo: MotionInfo | null;
+}
+
+export interface ProjectMotionImport {
+    type: "vmd" | "vpd";
+    path: string;
+    frame?: number;
+}
+
+export interface ProjectModelMaterialShaderState {
+    materialKey: string;
+    presetId: string;
+}
+
+export interface ProjectModelState {
+    path: string;
+    visible: boolean;
+    motionImports: ProjectMotionImport[];
+    materialShaders?: ProjectModelMaterialShaderState[];
+    animation?: ProjectSerializedModelAnimation | null;
+}
+
+export interface ProjectCameraState {
+    position: { x: number; y: number; z: number };
+    target: { x: number; y: number; z: number };
+    rotation: { x: number; y: number; z: number };
+    fov: number;
+    distance: number;
+}
+
+export interface ProjectRgbColor {
+    r: number;
+    g: number;
+    b: number;
+}
+
+export interface ProjectLightingState {
+    azimuth: number;
+    elevation: number;
+    intensity: number;
+    ambientIntensity: number;
+    temperatureKelvin: number;
+    lightColor?: ProjectRgbColor;
+    lightFlatStrength?: number;
+    lightFlatColorInfluence?: number;
+    shadowColor?: ProjectRgbColor;
+    toonShadowInfluence?: number;
+    shadowEnabled: boolean;
+    shadowDarkness: number;
+    shadowFrustumSize?: number;
+    shadowEdgeSoftness?: number;
+    selfShadowEdgeSoftness?: number;
+    occlusionShadowEdgeSoftness?: number;
+}
+
+export interface ProjectViewportState {
+    groundVisible: boolean;
+    skydomeVisible: boolean;
+    antialiasEnabled: boolean;
+}
+
+export interface ProjectPhysicsState {
+    enabled: boolean;
+    gravityAcceleration: number;
+    gravityDirection: { x: number; y: number; z: number };
+}
+
+export interface ProjectEffectState {
+    dofEnabled: boolean;
+    dofFocusDistanceMm: number;
+    dofFStop: number;
+    dofLensSize: number;
+    dofLensBlurStrength: number;
+    dofLensEdgeBlur: number;
+    dofLensDistortionInfluence: number;
+    modelEdgeWidth: number;
+    gamma: number;
+    exposure?: number;
+    toneMappingEnabled?: boolean;
+    toneMappingType?: number;
+    ditheringEnabled?: boolean;
+    ditheringIntensity?: number;
+    vignetteEnabled?: boolean;
+    vignetteWeight?: number;
+    bloomEnabled?: boolean;
+    bloomWeight?: number;
+    bloomThreshold?: number;
+    bloomKernel?: number;
+    chromaticAberration?: number;
+    grainIntensity?: number;
+    sharpenEdge?: number;
+    ssaoEnabled?: boolean;
+    ssaoStrength?: number;
+    ssaoRadius?: number;
+    ssaoFadeEnd?: number;
+    ssaoDebugView?: boolean;
+    colorCurvesEnabled?: boolean;
+    colorCurvesHue?: number;
+    colorCurvesDensity?: number;
+    colorCurvesSaturation?: number;
+    colorCurvesExposure?: number;
+    glowEnabled?: boolean;
+    glowIntensity?: number;
+    glowKernel?: number;
+    lutEnabled?: boolean;
+    lutIntensity?: number;
+    lutPreset?: string;
+    lutSourceMode?: "builtin" | "external-absolute" | "project-relative";
+    lutExternalPath?: string | null;
+    wgslToonShaderPath?: string | null;
+    motionBlurEnabled?: boolean;
+    motionBlurStrength?: number;
+    motionBlurSamples?: number;
+    ssrEnabled?: boolean;
+    ssrStrength?: number;
+    ssrStep?: number;
+    vlsEnabled?: boolean;
+    vlsExposure?: number;
+    vlsDecay?: number;
+    vlsWeight?: number;
+    vlsDensity?: number;
+    fogEnabled?: boolean;
+    fogMode?: number;
+    fogStart?: number;
+    fogEnd?: number;
+    fogDensity?: number;
+    gammaEncodingVersion?: 2;
+}
+
+export interface ProjectSerializedBoneTrack {
+    name: string;
+    frameNumbers: ProjectNumberArray;
+    rotations: ProjectNumberArray;
+    rotationInterpolations: ProjectNumberArray;
+    physicsToggles: ProjectNumberArray;
+}
+
+export interface ProjectSerializedMovableBoneTrack {
+    name: string;
+    frameNumbers: ProjectNumberArray;
+    positions: ProjectNumberArray;
+    positionInterpolations: ProjectNumberArray;
+    rotations: ProjectNumberArray;
+    rotationInterpolations: ProjectNumberArray;
+    physicsToggles: ProjectNumberArray;
+}
+
+export interface ProjectSerializedMorphTrack {
+    name: string;
+    frameNumbers: ProjectNumberArray;
+    weights: ProjectNumberArray;
+}
+
+export interface ProjectSerializedPropertyTrack {
+    frameNumbers: ProjectNumberArray;
+    visibles: ProjectNumberArray;
+    ikBoneNames: string[];
+    ikStates: ProjectNumberArray[];
+}
+
+export interface ProjectSerializedCameraTrack {
+    frameNumbers: ProjectNumberArray;
+    positions: ProjectNumberArray;
+    positionInterpolations: ProjectNumberArray;
+    rotations: ProjectNumberArray;
+    rotationInterpolations: ProjectNumberArray;
+    distances: ProjectNumberArray;
+    distanceInterpolations: ProjectNumberArray;
+    fovs: ProjectNumberArray;
+    fovInterpolations: ProjectNumberArray;
+}
+
+export interface ProjectPackedArray {
+    encoding: "u8-b64" | "f32-b64" | "u32-delta-varint-b64";
+    length: number;
+    data: string;
+}
+
+export type ProjectNumberArray = number[] | ProjectPackedArray;
+
+export interface ProjectSerializedModelAnimation {
+    name: string;
+    boneTracks: ProjectSerializedBoneTrack[];
+    movableBoneTracks: ProjectSerializedMovableBoneTrack[];
+    morphTracks: ProjectSerializedMorphTrack[];
+    propertyTrack: ProjectSerializedPropertyTrack;
+}
+
+export interface ProjectKeyframeModelAnimation {
+    modelPath: string;
+    animation: ProjectSerializedModelAnimation | null;
+}
+
+export interface ProjectKeyframeBundle {
+    modelAnimations: ProjectKeyframeModelAnimation[];
+    cameraAnimation: ProjectSerializedCameraTrack | null;
+}
+
+export interface MmdModokiProjectFileV1 {
+    format: "mmd_modoki_project";
+    version: 1;
+    savedAt: string;
+    scene: {
+        models: ProjectModelState[];
+        activeModelPath: string | null;
+        timelineTarget: "model" | "camera";
+        currentFrame: number;
+        playbackSpeed: number;
+    };
+    assets: {
+        cameraVmdPath: string | null;
+        audioPath: string | null;
+        cameraAnimation?: ProjectSerializedCameraTrack | null;
+    };
+    camera: ProjectCameraState;
+    lighting: ProjectLightingState;
+    viewport: ProjectViewportState;
+    physics: ProjectPhysicsState;
+    effects: ProjectEffectState;
+    keyframes?: ProjectKeyframeBundle;
+}
+
+export interface PngSequenceExportRequest {
+    project: MmdModokiProjectFileV1;
+    outputDirectoryPath: string;
+    startFrame: number;
+    endFrame: number;
+    step: number;
+    prefix: string;
+    fps: number;
+    precision: number;
+    outputWidth: number;
+    outputHeight: number;
+}
+
+export interface PngSequenceExportLaunchResult {
+    jobId: string;
+}
+
+export interface PngSequenceExportState {
+    active: boolean;
+    activeCount: number;
+}
+
+export interface PngSequenceExportProgress {
+    jobId: string;
+    saved: number;
+    captured: number;
+    total: number;
+    frame: number;
+}

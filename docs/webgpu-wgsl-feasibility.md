@@ -42,23 +42,23 @@
 
 ### 5-1. エンジン起動
 
-- 現在は `src/mmd-manager.ts:1385` で `new Engine(...)` 固定（WebGL経路）。
-- `src/renderer.ts:19` で `new MmdManager(canvas)` を同期生成しており、WebGPU導入時は初期化設計の変更が必要。
+- 現在は `src/renderer/core/mmd-manager.ts:1385` で `new Engine(...)` 固定（WebGL経路）。
+- `src/renderer/renderer.ts:19` で `new MmdManager(canvas)` を同期生成しており、WebGPU導入時は初期化設計の変更が必要。
 
 ### 5-2. 既存の shader 実装
 
 - 独自 GLSL 注入が `Effect.ShadersStore` 前提で 3 箇所ある:
-  - `src/mmd-manager.ts:3526`（gamma）
-  - `src/mmd-manager.ts:3596`（final lens distortion）
-  - `src/mmd-manager.ts:3869`（far dof）
-- さらに `src/mmd-manager.ts:3695` で `depthOfFieldPixelShader` 文字列置換を実施している。
+  - `src/renderer/core/mmd-manager.ts:3526`（gamma）
+  - `src/renderer/core/mmd-manager.ts:3596`（final lens distortion）
+  - `src/renderer/core/mmd-manager.ts:3869`（far dof）
+- さらに `src/renderer/core/mmd-manager.ts:3695` で `depthOfFieldPixelShader` 文字列置換を実施している。
   - この処理は WebGPU 側で shader store/生成経路が異なると効かない可能性があるため要注意。
 
 ### 5-3. babylon-mmd 側
 
 - `babylon-mmd` README に `WebGPU support` 明記あり。
 - 直近 changelog に WebGPU/WGSL 関連の shader 修正履歴が複数あり。
-- `SdefInjector.OverrideEngineCreateEffect(...)` を本プロジェクトでも使用中（`src/mmd-manager.ts:1416`）。
+- `SdefInjector.OverrideEngineCreateEffect(...)` を本プロジェクトでも使用中（`src/renderer/core/mmd-manager.ts:1416`）。
 
 ## 6. 段階実装プラン（推奨）
 
@@ -75,7 +75,7 @@
   1. `WebGPUEngine.IsSupportedAsync`
   2. 利用可なら WebGPU 起動
   3. 失敗時は WebGL2 に自動フォールバック
-- UI の Engine 表示（`src/mmd-manager.ts:3110`）はそのまま活用可。
+- UI の Engine 表示（`src/renderer/core/mmd-manager.ts:3110`）はそのまま活用可。
 
 ### Phase 2: 現行機能の WebGPU 安定化
 
@@ -130,14 +130,14 @@
 
 ### ローカルコード
 
-- `src/mmd-manager.ts:1385`
-- `src/mmd-manager.ts:1416`
-- `src/mmd-manager.ts:3110`
-- `src/mmd-manager.ts:3526`
-- `src/mmd-manager.ts:3596`
-- `src/mmd-manager.ts:3695`
-- `src/mmd-manager.ts:3869`
-- `src/renderer.ts:19`
+- `src/renderer/core/mmd-manager.ts:1385`
+- `src/renderer/core/mmd-manager.ts:1416`
+- `src/renderer/core/mmd-manager.ts:3110`
+- `src/renderer/core/mmd-manager.ts:3526`
+- `src/renderer/core/mmd-manager.ts:3596`
+- `src/renderer/core/mmd-manager.ts:3695`
+- `src/renderer/core/mmd-manager.ts:3869`
+- `src/renderer/renderer.ts:19`
 - `node_modules/@babylonjs/core/Engines/webgpuEngine.d.ts`
 - `node_modules/@babylonjs/core/Engines/shaderStore.d.ts`
 - `node_modules/@babylonjs/core/Materials/shaderLanguage.d.ts`
@@ -180,7 +180,7 @@
 
 ### 11-4. 主な変更ファイル
 
-- `src/mmd-manager.ts`
-- `src/renderer.ts`
-- `src/ui-controller.ts`
-- `src/types.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/renderer.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/shared/types.ts`

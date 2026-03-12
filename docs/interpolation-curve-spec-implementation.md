@@ -2,11 +2,11 @@
 
 更新日: 2026-02-23
 対象:
-- `src/ui-controller.ts`
-- `src/mmd-manager.ts`
-- `src/types.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/shared/types.ts`
 - `index.html`
-- `src/index.css`
+- `src/renderer/styles/index.css`
 
 ## 1. 仕様方針（MMD寄せ）
 

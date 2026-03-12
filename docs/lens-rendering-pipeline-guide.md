@@ -19,7 +19,7 @@
 
 ## 現在の使い方
 
-`src/mmd-manager.ts` での現行方針:
+`src/renderer/core/mmd-manager.ts` での現行方針:
 
 - 主DoF: `DefaultRenderingPipeline.depthOfField`
 - Lens: ハイライト強調 + エッジブラー

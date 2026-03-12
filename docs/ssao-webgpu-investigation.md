@@ -11,7 +11,7 @@ WebGPU モードで SSAO を扱う際の制約と、`MMD_modoki` での試行結
 - Babylon.js `v8.45.3`
 - WebGPU renderer（compatibility / WGSL-first）
 - 対象コード:
-  - `src/mmd-manager.ts`
+  - `src/renderer/core/mmd-manager.ts`
   - `applySsaoSettings()`
   - `hasPrePassRendererSupport()`
 

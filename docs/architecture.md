@@ -4,9 +4,9 @@
 
 このアプリは Electron の 3 層構成です。
 
-- Main Process: `src/main.ts`
-- Preload: `src/preload.ts`
-- Renderer: `src/renderer.ts`
+- Main Process: `src/main/main.ts`
+- Preload: `src/main/preload.ts`
+- Renderer: `src/renderer/renderer.ts`
 
 Renderer 側で以下のコンポーネントを組み立てます。
 
@@ -46,9 +46,9 @@ Renderer は Preload 経由でのみこれらへアクセスします。
 
 - 設定: `forge.config.ts`
 - Vite エントリ
-  - Main: `src/main.ts`
-  - Preload: `src/preload.ts`
-  - Renderer: `index.html` + `src/renderer.ts`
+  - Main: `src/main/main.ts`
+  - Preload: `src/main/preload.ts`
+  - Renderer: `index.html` + `src/renderer/renderer.ts`
 
 主要コマンド:
 

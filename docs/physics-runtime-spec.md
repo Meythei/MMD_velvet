@@ -8,7 +8,7 @@
 
 ## 対象範囲
 
-- 実装ファイル: `src/mmd-manager.ts`, `src/ui-controller.ts`, `index.html`
+- 実装ファイル: `src/renderer/core/mmd-manager.ts`, `src/renderer/components/ui-controller.ts`, `index.html`
 - 物理ランタイム: babylon-mmd (`MmdAmmoJSPlugin` + `MmdAmmoPhysics`)
 
 ## 初期化仕様

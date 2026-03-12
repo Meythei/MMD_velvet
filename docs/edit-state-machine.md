@@ -2,8 +2,8 @@
 
 更新日: 2026-02-22
 対象:
-- `src/mmd-manager.ts`
-- `src/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/ui-controller.ts`
 
 ## 1. 目的
 - 再生・停止・シーク・ボーン操作の状態遷移を固定化し、挙動差分と不具合を追いやすくする。
@@ -24,16 +24,16 @@
 - `Playing* -> Idle`: 末尾到達時 `UIController.stopAtPlaybackEnd()`
 
 参照:
-- `src/mmd-manager.ts:2263`
-- `src/ui-controller.ts:706`
-- `src/ui-controller.ts:1356`
+- `src/renderer/core/mmd-manager.ts:2263`
+- `src/renderer/components/ui-controller.ts:706`
+- `src/renderer/components/ui-controller.ts:1356`
 
 ### 3-2. シーク系
 - `Idle/Playing* -> HardSeeking`: `seekToBoundary(frame)`
 - `HardSeeking -> Idle/Playing*`: `pause -> seekTo -> stabilizePhysicsAfterHardSeek -> play(必要時)`
 
 参照:
-- `src/mmd-manager.ts:2311`
+- `src/renderer/core/mmd-manager.ts:2311`
 
 ### 3-3. ギズモ系
 - `Idle -> BoneGizmoDragging`: ギズモドラッグ開始
@@ -43,7 +43,7 @@
 - 終了時: 元がONなら復帰
 
 参照:
-- `src/mmd-manager.ts:1528`
+- `src/renderer/core/mmd-manager.ts:1528`
 
 ## 4. 状態に応じた制約
 - `Playing*` 中:
@@ -54,9 +54,9 @@
 - ボーンギズモ無効
 
 参照:
-- `src/mmd-manager.ts:457`
-- `src/mmd-manager.ts:763`
-- `src/mmd-manager.ts:1098`
+- `src/renderer/core/mmd-manager.ts:457`
+- `src/renderer/core/mmd-manager.ts:763`
+- `src/renderer/core/mmd-manager.ts:1098`
 
 ## 5. 終端停止ポリシー
 - 末尾到達判定は `onFrameUpdate` 側で行う。
@@ -64,8 +64,8 @@
 - `stop()` のように0フレームには戻さない。
 
 参照:
-- `src/ui-controller.ts:728`
-- `src/ui-controller.ts:1356`
+- `src/renderer/components/ui-controller.ts:728`
+- `src/renderer/components/ui-controller.ts:1356`
 
 ## 6. 変更時チェック
 - 再生制御を触る時:

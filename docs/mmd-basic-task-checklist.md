@@ -4,16 +4,16 @@
 
 ## 判定対象
 
-- `src/mmd-manager.ts`
-- `src/ui-controller.ts`
-- `src/renderer.ts`
-- `src/preload.ts`
-- `src/main.ts`
-- `src/png-sequence-exporter.ts`
-- `src/timeline.ts`
-- `src/bottom-panel.ts`
-- `src/types.ts`
-- `src/index.css`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/renderer/renderer.ts`
+- `src/main/preload.ts`
+- `src/main/main.ts`
+- `src/renderer/features/png-sequence-exporter.ts`
+- `src/renderer/components/timeline.ts`
+- `src/renderer/components/bottom-panel.ts`
+- `src/shared/types.ts`
+- `src/renderer/styles/index.css`
 - `index.html`
 - `docs/physics-task-list.md`
 - `docs/physics-runtime-spec.md`

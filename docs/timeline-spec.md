@@ -2,10 +2,10 @@
 
 更新日: 2026-02-23
 対象:
-- `src/timeline.ts`
-- `src/ui-controller.ts`
-- `src/mmd-manager.ts`
-- `src/types.ts`
+- `src/renderer/components/timeline.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/shared/types.ts`
 - `index.html`
 
 ## 1. 目的
@@ -37,7 +37,7 @@
 - `setKeyframeTracks`: static + label (+ resize)
 - スクロール: static
 
-参照: `src/timeline.ts:13`, `src/timeline.ts:294`
+参照: `src/renderer/components/timeline.ts:13`, `src/renderer/components/timeline.ts:294`
 
 ## 3. データモデル
 
@@ -47,7 +47,7 @@
 - `category`: `root | camera | semi-standard | bone | morph`
 - `frames`: 昇順 `Uint32Array`
 
-参照: `src/types.ts:45`
+参照: `src/shared/types.ts:45`
 
 ### 3-2. 内部保持
 `MmdManager` 側で次を保持する。
@@ -55,7 +55,7 @@
 - カメラトラック: `cameraKeyframeFrames`（共通フレーム列）
 - トラックキー: `category + separator + name`
 
-参照: `src/mmd-manager.ts:133`, `src/mmd-manager.ts:210`, `src/mmd-manager.ts:3442`
+参照: `src/renderer/core/mmd-manager.ts:133`, `src/renderer/core/mmd-manager.ts:210`, `src/renderer/core/mmd-manager.ts:3442`
 
 ### 3-3. フレーム配列操作
 フレーム列は二分探索で編集する。
@@ -64,7 +64,7 @@
 - 移動: `moveFrameNumber`
 - 重複除去マージ: `mergeFrameNumbers`
 
-参照: `src/mmd-manager.ts:51`
+参照: `src/renderer/core/mmd-manager.ts:51`
 
 ## 4. トラック生成仕様
 
@@ -76,7 +76,7 @@
 - 残りボーン、モーフを順次追加
 - 既存Map上で未消費トラックは末尾追加
 
-参照: `src/mmd-manager.ts:3765`
+参照: `src/renderer/core/mmd-manager.ts:3765`
 
 ### 4-2. カメラ対象
 カメラ対象時は `Camera` 1行を固定表示する。
@@ -84,7 +84,7 @@
 
 カメラ行は `cameraKeyframeFrames` を共有し、補間表示は `X/Y/Z/回転/距離/FoV` の6chで扱う。
 
-参照: `src/mmd-manager.ts:3844`
+参照: `src/renderer/core/mmd-manager.ts:3844`
 
 ### 4-3. 発火タイミング
 トラック更新イベントは `emitMergedKeyframeTracks()` で発火する。
@@ -93,7 +93,7 @@
 - VMD/VPD/カメラVMD読み込み
 - アクティブモデル切替/削除
 
-参照: `src/mmd-manager.ts:3907`, `src/mmd-manager.ts:432`
+参照: `src/renderer/core/mmd-manager.ts:3907`, `src/renderer/core/mmd-manager.ts:432`
 
 ## 5. 操作仕様
 
@@ -107,7 +107,7 @@
 - API:
 - `timeline.onSeek(frame)` -> `mmdManager.seekTo(frame)`
 
-参照: `src/timeline.ts:115`, `src/timeline.ts:173`, `src/ui-controller.ts:333`
+参照: `src/renderer/components/timeline.ts:115`, `src/renderer/components/timeline.ts:173`, `src/renderer/components/ui-controller.ts:333`
 
 ### 5-2. 選択
 - ラベルクリック: 行選択のみ
@@ -117,7 +117,7 @@
 - `selectedFrame`（未ヒットなら `null`）
 - 選択ラベルはキー種別を明示（`[Bone]` / `[Morph]` / `[Camera]`）
 
-参照: `src/timeline.ts:528`, `src/timeline.ts:544`, `src/timeline.ts:558`
+参照: `src/renderer/components/timeline.ts:528`, `src/renderer/components/timeline.ts:544`, `src/renderer/components/timeline.ts:558`
 
 ### 5-3. キー編集
 - 登録:
@@ -130,7 +130,7 @@
 - 選択キーあり: キーを `±1` フレーム移動
 - 選択キーなし: フレームシーク
 
-参照: `src/ui-controller.ts:1268`, `src/ui-controller.ts:1287`, `src/ui-controller.ts:1308`
+参照: `src/renderer/components/ui-controller.ts:1268`, `src/renderer/components/ui-controller.ts:1287`, `src/renderer/components/ui-controller.ts:1308`
 
 ## 6. ショートカット仕様
 - `+`, `NumpadAdd`, `K`, `I`: キー登録
@@ -140,7 +140,7 @@
 - `Home/End`: 先頭/末尾へ
 - `Space`: 再生/一時停止
 
-参照: `src/ui-controller.ts:805`
+参照: `src/renderer/components/ui-controller.ts:805`
 
 ## 7. 再生との連携
 
@@ -150,25 +150,25 @@
 - `timeline.setCurrentFrame(frame)`
 - 編集ボタン状態更新
 
-参照: `src/ui-controller.ts:706`
+参照: `src/renderer/components/ui-controller.ts:706`
 
 ### 7-2. 末尾到達時停止
 - `isPlaying && frame >= total` で `stopAtPlaybackEnd()` を実行
 - 実装は `pause()` + `seekTo(totalFrames)` なので、停止後も末尾フレーム維持
 
-参照: `src/ui-controller.ts:728`, `src/ui-controller.ts:1356`
+参照: `src/renderer/components/ui-controller.ts:728`, `src/renderer/components/ui-controller.ts:1356`
 
 ### 7-3. 音源なし再生
 - 音源なし時は `manualPlaybackWithoutAudio` で30fps換算の手動進行
 - 音源あり時は runtime の `currentFrameTime` を採用
 
-参照: `src/mmd-manager.ts:1571`, `src/mmd-manager.ts:2263`
+参照: `src/renderer/core/mmd-manager.ts:1571`, `src/renderer/core/mmd-manager.ts:2263`
 
 ### 7-4. シーク上限
 - `seekTo(frame)` は `frame > totalFrames` なら `totalFrames` を拡張する。
 - そのため矢印キーで実質上限なしに進められる。
 
-参照: `src/mmd-manager.ts:2298`
+参照: `src/renderer/core/mmd-manager.ts:2298`
 
 ## 8. 読み込み時のタイムライン反映
 - VMD:
@@ -179,14 +179,14 @@
 - カメラVMD:
 - `cameraKeyframeFrames` を更新し、カメラ行へ反映
 
-参照: `src/mmd-manager.ts:2026`, `src/mmd-manager.ts:2077`, `src/mmd-manager.ts:2148`
+参照: `src/renderer/core/mmd-manager.ts:2026`, `src/renderer/core/mmd-manager.ts:2077`, `src/renderer/core/mmd-manager.ts:2148`
 
 ## 9. ボーン選択同期
 - タイムライン行選択 <-> ボーン欄選択 <-> 3Dボーン選択を同期する。
 - `syncingBoneSelection` フラグで再帰更新を回避。
 - 対象は `root/semi-standard/bone` カテゴリのみ。
 
-参照: `src/ui-controller.ts:336`, `src/ui-controller.ts:1201`, `src/ui-controller.ts:1214`, `src/ui-controller.ts:1228`
+参照: `src/renderer/components/ui-controller.ts:336`, `src/renderer/components/ui-controller.ts:1201`, `src/renderer/components/ui-controller.ts:1214`, `src/renderer/components/ui-controller.ts:1228`
 
 ## 10. 現在の制約
 - キー編集の範囲操作（複数選択/コピー/貼り付け/スケール）は未実装。

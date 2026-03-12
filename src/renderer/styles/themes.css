@@ -1,0 +1,90 @@
+:root {
+  /* --- Ableton Live (Ableton Live Inspired) --- */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #242424;
+  --bg-tertiary: #2e2e2e;
+  --bg-elevated: #333333;
+  --bg-hover: #3d3d3d;
+  --bg-active: #4a4a4a;
+
+  --accent-primary: #ff8c00;
+  --accent-secondary: #ffb700;
+  --accent-pink: #ff527b;
+  --accent-cyan: #00e5ff;
+  --accent-green: #3cfc14;
+  --accent-amber: #ffcc00;
+  --accent-red: #ff3c3c;
+
+  --gradient-primary: linear-gradient(180deg, #ff8c00 0%, #ffb700 100%);
+  --gradient-subtle: linear-gradient(180deg, rgba(255, 140, 0, 0.15) 0%, rgba(255, 183, 0, 0.1) 100%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+
+  --text-primary: #d0d0d0;
+  --text-secondary: #b1b1b1;
+  --text-tertiary: #8c8c8c;
+  --text-accent: #ffb700;
+
+  --border-color: #121212;
+  --border-accent: #444444;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 15px rgba(255, 140, 0, 0.1);
+
+  --transition-fast: 100ms ease-out;
+  --transition-normal: 180ms ease-out;
+  --transition-slow: 300ms ease-out;
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  --toolbar-height: 44px;
+  --font-sans: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+[data-theme="abyss"] {
+  --bg-primary: #000c18;
+  --bg-secondary: #001224;
+  --bg-tertiary: #001a33;
+  --bg-elevated: #002244;
+  --bg-hover: #082d5a;
+  --bg-active: #103a70;
+
+  --text-primary: #bee3f8;
+  --text-secondary: #90cdf4;
+  --text-tertiary: #63b3ed;
+  --text-accent: #3182ce;
+
+  --accent-primary: #3182ce;
+  --border-color: rgba(49, 130, 206, 0.2);
+  --border-accent: rgba(49, 130, 206, 0.4);
+  --shadow-glow: 0 0 20px rgba(49, 130, 206, 0.15);
+}
+
+[data-theme="one-dark-pro"] {
+  --bg-primary: #1e2227;
+  --bg-secondary: #24282f;
+  --bg-tertiary: #282c34;
+  --bg-elevated: #2c323c;
+  --bg-hover: #353b45;
+  --bg-active: #3e4451;
+
+  --text-primary: #abb2bf;
+  --text-secondary: #828997;
+  --text-tertiary: #5c6370;
+  --text-accent: #61afef;
+
+  --accent-primary: #61afef;
+  --accent-cyan: #56b6c2;
+  --accent-pink: #c678dd;
+  --accent-amber: #d19a66;
+  --accent-green: #98c379;
+  --accent-red: #e06c75;
+
+  --border-color: #181a1f;
+  --border-accent: #3e4451;
+  --shadow-glow: 0 0 15px rgba(0, 0, 0, 0.4);
+}

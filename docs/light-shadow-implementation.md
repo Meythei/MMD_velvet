@@ -3,10 +3,10 @@
 このドキュメントは、現行の「光面/影面の分離」と「光色・影色制御」の実装をまとめたものです。  
 対象コードは主に以下です。
 
-- `src/mmd-manager.ts`
-- `src/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/ui-controller.ts`
 - `index.html`
-- `src/index.css`
+- `src/renderer/styles/index.css`
 
 ## 1. 全体構成
 

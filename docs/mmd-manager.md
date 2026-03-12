@@ -1,6 +1,6 @@
 # MmdManager 実装メモ
 
-対象: `src/mmd-manager.ts`
+対象: `src/renderer/core/mmd-manager.ts`
 
 ## 役割
 
@@ -78,5 +78,5 @@ HTML 側で `dof-row-hidden` により複数項目を非表示運用している
 
 ## 注意点
 
-- `src/mmd-manager.ts` は CP932 系エンコーディングのため、編集時は文字化けに注意
+- `src/renderer/core/mmd-manager.ts` は CP932 系エンコーディングのため、編集時は文字化けに注意
 - 収差は最終段適用なので、Lens 側の歪みパラメータを触っても見た目に反映されない（意図仕様）

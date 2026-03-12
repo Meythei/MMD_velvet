@@ -2,9 +2,9 @@
 
 更新日: 2026-02-22
 対象:
-- `src/ui-controller.ts`
-- `src/mmd-manager.ts`
-- `src/timeline.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/timeline.ts`
 
 ## 1. 目的
 - タイムライン周辺の責務境界とイベント方向を固定化する。
@@ -26,8 +26,8 @@
 4. `UIController` が選択同期（ボーン欄/可視化）を再適用
 
 参照:
-- `src/mmd-manager.ts:3907`
-- `src/ui-controller.ts:774`
+- `src/renderer/core/mmd-manager.ts:3907`
+- `src/renderer/components/ui-controller.ts:774`
 
 ### 3-2. シークフロー
 1. `Timeline.onSeek(frame)` 発火  
@@ -36,9 +36,9 @@
 4. `UIController -> timeline.setCurrentFrame(frame)` + フレーム表示更新
 
 参照:
-- `src/timeline.ts:84`
-- `src/ui-controller.ts:333`
-- `src/ui-controller.ts:706`
+- `src/renderer/components/timeline.ts:84`
+- `src/renderer/components/ui-controller.ts:333`
+- `src/renderer/components/ui-controller.ts:706`
 
 ### 3-3. 選択同期フロー（ボーン）
 1. タイムライン選択変更  
@@ -47,10 +47,10 @@
 4. 逆方向（ボーン欄/3Dピック -> タイムライン）も同様
 
 参照:
-- `src/ui-controller.ts:336`
-- `src/ui-controller.ts:1201`
-- `src/ui-controller.ts:1214`
-- `src/ui-controller.ts:797`
+- `src/renderer/components/ui-controller.ts:336`
+- `src/renderer/components/ui-controller.ts:1201`
+- `src/renderer/components/ui-controller.ts:1214`
+- `src/renderer/components/ui-controller.ts:797`
 
 ### 3-4. キー編集フロー
 1. UI（ボタン/ショートカット）で編集要求  
@@ -59,8 +59,8 @@
 4. `emitMergedKeyframeTracks()` で再描画へ反映
 
 参照:
-- `src/ui-controller.ts:1268`
-- `src/mmd-manager.ts:1179`
+- `src/renderer/components/ui-controller.ts:1268`
+- `src/renderer/core/mmd-manager.ts:1179`
 
 ## 4. 実装ルール
 - `Timeline` は状態を持つが、ソース・オブ・トゥルースは `MmdManager` 側。

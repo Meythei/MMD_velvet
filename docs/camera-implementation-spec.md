@@ -2,8 +2,8 @@
 
 対象:
 
-- `src/mmd-manager.ts`
-- `src/ui-controller.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/ui-controller.ts`
 - `index.html`
 
 更新日: 2026-02-21

@@ -14,20 +14,20 @@
 - 右のエフェクト欄も横幅変更可能
 - `情報 > 対象` と `エフェクト欄 > 対象` のモデル選択は相互同期する
 
-レイアウト本体は `index.html`、見た目は `src/index.css` で管理します。
+レイアウト本体は `index.html`、見た目は `src/renderer/styles/index.css` で管理します。
 
 ## UI 制御クラス
 
-`src/ui-controller.ts` が以下を担当します。
+`src/renderer/components/ui-controller.ts` が以下を担当します。
 
 - ボタンクリックとショートカットのバインド
 - `MmdManager` のコールバック受け取り
 - タイムラインへの現在フレーム反映
 - 複数モデルのセレクタ更新とアクティブ切替
 - ステータス表示やトースト表示
-- `src/i18n.ts` の辞書キーを使った動的UI文言更新
+- `src/renderer/i18n/index.ts` の辞書キーを使った動的UI文言更新
 
-`src/i18n.ts` は以下を提供します。
+`src/renderer/i18n/index.ts` は以下を提供します。
 
 - ロケール管理（`ja` / `en`）
 - `t(key, params)` による文字列解決
@@ -94,7 +94,7 @@
 
 ## タイムライン描画の仕組み
 
-`src/timeline.ts` は 3 Canvas 構成です。
+`src/renderer/components/timeline.ts` は 3 Canvas 構成です。
 
 - static: トラック背景 + キーフレーム点
 - overlay: ルーラー + 再生ヘッド

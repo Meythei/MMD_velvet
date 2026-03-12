@@ -2,11 +2,11 @@
 
 更新日: 2026-02-22
 対象実装:
-- `src/mmd-manager.ts`
-- `src/ui-controller.ts`
-- `src/bottom-panel.ts`
-- `src/timeline.ts`
-- `src/types.ts`
+- `src/renderer/core/mmd-manager.ts`
+- `src/renderer/components/ui-controller.ts`
+- `src/renderer/components/bottom-panel.ts`
+- `src/renderer/components/timeline.ts`
+- `src/shared/types.ts`
 - `index.html`
 
 ## 1. 目的
@@ -51,7 +51,7 @@
 - `BoneControlInfo.movable` / `BoneControlInfo.rotatable` が操作可否。
 - `BoneControlInfo.isIk` / `BoneControlInfo.isIkAffected` が表示スタイル判定に使用。
 
-定義: `src/types.ts`
+定義: `src/shared/types.ts`
 
 ### 3-2. 表示対象ボーンの抽出ルール
 モデル読込時に `mmdMetadata` からボーンを抽出する。
@@ -60,7 +60,7 @@
 - 重複名は除外
 - IKボーン/IK影響ボーンは別フラグを付与
 
-実装: `src/mmd-manager.ts:1785`
+実装: `src/renderer/core/mmd-manager.ts:1785`
 
 ## 4. 実装構成
 
@@ -71,14 +71,14 @@
 - `setBoneVisualizerSelectedBone()` で選択ボーンを更新。
 - 選択更新時にギズモ付け替えを再評価。
 
-実装: `src/mmd-manager.ts:432`, `src/mmd-manager.ts:443`
+実装: `src/renderer/core/mmd-manager.ts:432`, `src/renderer/core/mmd-manager.ts:443`
 
 #### ボーンオーバーレイ生成
 - ランタイムボーン優先で親子ペアを構築。
 - 取れない場合は Babylon `Skeleton` からフォールバック。
 - モデル差異を吸収するため、必要に応じて mesh の world 行列を適用して補正。
 
-実装: `src/mmd-manager.ts:619`
+実装: `src/renderer/core/mmd-manager.ts:619`
 
 #### ボーン描画
 - 毎フレーム `updateBoneVisualizer()` で再投影して描画。
@@ -88,14 +88,14 @@
 - 選択色は赤系。
 - 非選択→選択の順で描画し、選択を前面化。
 
-実装: `src/mmd-manager.ts:759`, `src/mmd-manager.ts:992`, `src/mmd-manager.ts:1022`, `src/mmd-manager.ts:1049`
+実装: `src/renderer/core/mmd-manager.ts:759`, `src/renderer/core/mmd-manager.ts:992`, `src/renderer/core/mmd-manager.ts:1022`, `src/renderer/core/mmd-manager.ts:1049`
 
 #### クリックピッキング
 - 実体は `render-canvas` の pointerイベントで受ける。
 - 押下/離し位置の移動量が小さい場合のみクリック扱い。
 - 投影済み点群から半径14px以内の最近傍ボーンを選択。
 
-実装: `src/mmd-manager.ts:299`, `src/mmd-manager.ts:960`, `src/mmd-manager.ts:1383`
+実装: `src/renderer/core/mmd-manager.ts:299`, `src/renderer/core/mmd-manager.ts:960`, `src/renderer/core/mmd-manager.ts:1383`
 
 #### ギズモ操作
 - `GizmoManager` を1つ作り、選択ボーンに対して `proxy node` をアタッチ。
@@ -103,7 +103,7 @@
 - ギズモドラッグ中は物理を一時OFF、終了後に元状態へ復帰。
 - proxyのworld変換をボーンローカルへ逆変換して反映。
 
-実装: `src/mmd-manager.ts:452`, `src/mmd-manager.ts:508`, `src/mmd-manager.ts:543`, `src/mmd-manager.ts:1528`
+実装: `src/renderer/core/mmd-manager.ts:452`, `src/renderer/core/mmd-manager.ts:508`, `src/renderer/core/mmd-manager.ts:543`, `src/renderer/core/mmd-manager.ts:1528`
 
 #### スライダー操作API
 - `getBoneTransform()` で現在オフセット値を取得（回転はdegで返す）。
@@ -111,7 +111,7 @@
 - `setBoneRotation()` は Euler(deg) -> Quaternion で反映。
 - 反映後は `invalidateBoneVisualizerPose()` で行列更新を強制。
 
-実装: `src/mmd-manager.ts:3253`, `src/mmd-manager.ts:3278`, `src/mmd-manager.ts:3291`, `src/mmd-manager.ts:3304`
+実装: `src/renderer/core/mmd-manager.ts:3253`, `src/renderer/core/mmd-manager.ts:3278`, `src/renderer/core/mmd-manager.ts:3291`, `src/renderer/core/mmd-manager.ts:3304`
 
 ### 4-2. BottomPanel（ボーン欄）
 - モデル情報受領時にドロップダウンを構築。
@@ -119,21 +119,21 @@
 - スライダー入力は即時で `setBoneTranslation/Rotation` に反映。
 - `onBoneSelectionChanged` で外部へ選択変更通知。
 
-実装: `src/bottom-panel.ts:41`, `src/bottom-panel.ts:146`, `src/bottom-panel.ts:229`
+実装: `src/renderer/components/bottom-panel.ts:41`, `src/renderer/components/bottom-panel.ts:146`, `src/renderer/components/bottom-panel.ts:229`
 
 ### 4-3. UIController（同期制御）
 - タイムライン選択変更時: ボーン欄選択とボーン可視化選択を更新。
 - ボーン欄選択変更時: タイムライン該当行選択とボーン可視化選択を更新。
 - 3Dピック時: ボーン欄に反映し、タイムライン選択を更新。
 
-実装: `src/ui-controller.ts:336`, `src/ui-controller.ts:797`, `src/ui-controller.ts:1201`, `src/ui-controller.ts:1214`, `src/ui-controller.ts:1228`
+実装: `src/renderer/components/ui-controller.ts:336`, `src/renderer/components/ui-controller.ts:797`, `src/renderer/components/ui-controller.ts:1201`, `src/renderer/components/ui-controller.ts:1214`, `src/renderer/components/ui-controller.ts:1228`
 
 ### 4-4. Timeline（ボーントラック選択）
 - トラックは `name + category` で識別。
 - 外部から `selectTrackByNameAndCategory()` で選択可能。
 - 行クリックでトラック選択、キー近傍クリックでフレーム選択。
 
-実装: `src/timeline.ts:236`, `src/timeline.ts:528`, `src/timeline.ts:558`
+実装: `src/renderer/components/timeline.ts:236`, `src/renderer/components/timeline.ts:528`, `src/renderer/components/timeline.ts:558`
 
 ## 5. 見た目仕様（MMD寄せ）
 - IK/通常で色系統を分離（橙/青）。
@@ -141,7 +141,7 @@
 - マーカー中心に内側の塗りを持たせ、視認性を確保。
 - 選択時は線幅/マーカーサイズを拡大。
 
-実装: `src/mmd-manager.ts:992`, `src/mmd-manager.ts:1057`
+実装: `src/renderer/core/mmd-manager.ts:992`, `src/renderer/core/mmd-manager.ts:1057`
 
 ## 6. 現在の制約
 - キーフレーム「登録」は現状、フレーム番号管理が中心で、チャンネル値の本格編集UIは未実装。
